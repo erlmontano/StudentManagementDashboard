@@ -4,26 +4,26 @@ export function getStudentsAPI() { //access student db
 
 export function addStudentsAPI(newStudentData) {
   const savedStudent = {
-    id: Date.now(), ...newStudentData,
+     id: Date.now(), ...newStudentData, //gives students id
   };
 
   mockStudentDb.push(savedStudent);
   return savedStudent; //add the new student db
 }
-
+let nextId = 3;
 let mockStudentDb = [
-  {
-    id: Date.now(), //prepoluted data of students' information
-    firstName: "Leslie",
-    lastName: "Andrews",
-    email: "leslie.andrews@example.com",
-  },
-  {
-    id: Date.now(), //prepoluted data of students' information
-    firstName: "Emma",
-    lastName: "Baumgarten",
-    email: "emma.baumgarten@example.com",
-  },
+//   {
+//     id: Date.now(), //prepoluted data of students' information
+//     firstName: "Leslie",
+//     lastName: "Andrews",
+//     email: "leslie.andrews@example.com",
+//   },
+//   {
+//     id: Date.now(), //prepoluted data of students' information
+//     firstName: "Emma",
+//     lastName: "Baumgarten",
+//     email: "emma.baumgarten@example.com",
+//   },
 ];
 
 
