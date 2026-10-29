@@ -4,107 +4,331 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        :root {
+            --bg: #f4f7f6;
+            --surface: #ffffff;
+            --surface-hover: #f8faf9;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-glow: rgba(79, 70, 229, 0.15);
+            --success: #059669;
+            --success-glow: rgba(5, 150, 105, 0.15);
+            --warning: #d97706;
+            --danger: #dc2626;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 8px 28px rgba(0, 0, 0, 0.08);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 40px;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
+
+        .content {
+            max-width: 1200px; margin: 0 auto; padding: 24px 32px 48px; width: 100%;
+        }
+
+        /* Header */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 20px; padding-bottom: 24px; border-bottom: 1px solid var(--border);
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; }
+
+        .brand-badge {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: #fff; box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .brand h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+        .brand h1 span {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .header-date {
+            font-size: 13px; color: var(--text-muted);
+            background: var(--surface); padding: 10px 16px;
+            border-radius: 24px; border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .header-date span { color: var(--text); font-weight: 600; }
+
+        /* Hero */
+        .hero { text-align: center; padding: 8px 0 28px; }
+        .hero h2 { font-size: 34px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+        .hero h2 span {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero p { color: var(--text-muted); font-size: 16px; max-width: 580px; margin: 0 auto; }
+
+        /* Stats */
+        .stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px; margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 22px 24px;
+            box-shadow: var(--shadow); transition: var(--transition);
+        }
+        .stat-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: var(--shadow-hover); }
+
+        .stat-card.primary { border-top: 4px solid var(--primary); }
+        .stat-card.success { border-top: 4px solid var(--success); }
+        .stat-card.warning { border-top: 4px solid var(--warning); }
+
+        .stat-icon {
+            width: 48px; height: 48px; border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 14px;
+        }
+        .stat-card.primary .stat-icon { background: var(--primary-glow); color: var(--primary); }
+        .stat-card.success .stat-icon { background: var(--success-glow); color: var(--success); }
+        .stat-card.warning .stat-icon { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+
+        .stat-card .stat-value { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
+        .stat-card .stat-label { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+        /* Dashboard */
         .dashboard-container {
-            display: flex;
-            gap: 40px;
-            max-width: 900px;
-            margin: 0 auto;
+            display: flex; gap: 24px;
         }
-        .form-panel {
-            flex: 1;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+        .panel {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow); transition: var(--transition);
         }
-        .table-panel {
-            flex: 2;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        .panel:hover { border-color: var(--border-hover); box-shadow: var(--shadow-hover); }
+
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
         }
-        .form-group {
-            margin-bottom: 15px;
+        .panel-header h3 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+
+        .action-icon {
+            color: var(--text-muted); cursor: pointer;
+            transition: var(--transition); font-size: 16px;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+        .action-icon:hover { color: var(--text); transform: scale(1.1); }
+
+        .panel-body { padding: 24px; le }
+
+        /* Form */
+        .form-card h3 {
+            font-size: 20px; font-weight: 700; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
         }
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .form-card h3 .icon {
+            width: 40px; height: 40px; background: var(--primary-glow);
+            border-radius: var(--radius-sm); display: flex;
+            align-items: center; justify-content: center; color: var(--primary); font-size: 18px;
         }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block; margin-bottom: 8px;
+            font-weight: 600; font-size: 13px; color: var(--text-muted);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .form-group input {
+            width: 100%; padding: 12px 16px;
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background: #fcfcfd; color: var(--text); font-size: 14px;
+            transition: var(--transition); outline: none;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        .form-group input::placeholder { color: var(--text-muted); opacity: 0.6; }
+        .form-group input:focus {
+            border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow);
         }
-        th { background-color: #f8f9fa; }
+
+        .form-actions { display: flex; gap: 12px; margin-top: 24px; }
+
+        .btn {
+            padding: 12px 106px; border: none; border-radius: var(--radius-sm);
+            font-weight: 700; font-size: 14px; cursor: pointer;
+            transition: var(--transition); display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: #fff; box-shadow: 0 4px 14px var(--primary-glow);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--primary-glow); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-secondary {
+            background: var(--surface); color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: var(--surface-hover); border-color: var(--border-hover); }
+
+        .form-feedback {
+            padding: 12px 16px; border-radius: var(--radius-sm);
+            font-size: 13px; margin-top: 16px; display: none;
+        }
+        .form-feedback.show { display: block; }
+        .form-feedback.success { background: var(--success-glow); color: var(--success); border: 1px solid rgba(5, 150, 105, 0.3); }
+        .form-feedback.error { background: rgba(220, 38, 38, 0.08); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.2); }
+
+        /* Table */
+        .table-panel { overflow: hidden; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 699px; border-collapse: collapse; }
+
+        thead {
+            background: var(--bg); position: sticky; top: 0; z-index: 2;
+        }
+        th {
+            padding: 14px 16px; text-align: left; font-size: 12px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+        tbody tr { transition: var(--transition); cursor: default; }
+        tbody tr:hover { background: var(--surface-hover); }
+
+        .empty-state {
+            text-align: center; padding: 48px 20px;
+        }
+        .empty-state i { font-size: 48px; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+        .empty-state p { color: var(--text-muted); font-size: 14px; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border); border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; padding-bottom: 16px; }
+            .hero { padding: 8px 0 20px; }
+            .hero h2 { font-size: 26px; }
+            .stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+            .dashboard-container { flex-direction: column; gap: 16px; }
+            .panel-header { padding: 16px 16px; }
+            .panel-body { padding: 16px; }
+            .form-card { padding: 16px; }
+            .form-actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .header-actions { width: 100%; justify-content: space-between; }
+        }
+
+        @media (max-width: 480px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .brand h1 { font-size: 20px; }
+            .hero h2 { font-size: 22px; }
+        }
     </style>
 </head>
 <body>
+    <div class="content">
+        <header class="header">
+            <div class="brand">
+                <div class="brand-badge"><i class="fas fa-graduation-cap"></i></div>
+                <h1>Student <span>Manager</span></h1>
+            </div>
+            <div class="header-actions">
+        </header>
 
-    <h2 style="text-align: center; margin-bottom: 30px;">Student Management Dashboard</h2>
-
-    <div class="dashboard-container">
-        <div class="form-panel">
-            <h3>Add New Student</h3>
-            <form id="studentForm">
-                <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" id="firstName" placeholder="e.g. Viktor">
-                </div>
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <input type="text" id="lastName" placeholder="e.g. Magtatanggol">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" placeholder="viktor.magtatanggol@example.com">
-                </div>
-                <button type="submit">Submit Record</button>
-            </form>
+        <div class="hero">
+            <p>Manage your student records with a clean and intuitive interface.</p>
         </div>
 
-        <div class="table-panel">
-            <h3>Registered Students</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody id="studentTableBody">
-                    </tbody>
-            </table>
+        <div class="stats" id="statsContainer">
+            <div class="stat-card primary">
+                <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value" id="statVerified">0</div>
+                <div class="stat-label">Verified</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                <div class="stat-value" id="statUnverified">0</div>
+                <div class="stat-label">Awaiting Verification</div>
+            </div>
+        </div>
+
+        <div class="dashboard-container">
+            <div class="panel form-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-user-plus icon"></i> Add New Student</h3>
+                    <span class="action-icon" id="refreshStats" title="Refresh"><i class="fas fa-sync-alt"></i></span>
+                </div>
+                <div class="panel-body">
+                    <div class="form-card">
+                        <form id="studentForm">
+                            <div class="form-group">
+                                <label for="firstName"><i class="fas fa-user" style="margin-right: 6px;"></i>First Name</label>
+                                <input type="text" id="firstName" placeholder="e.g. Viktor" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName"><i class="fas fa-user-tag" style="margin-right: 6px;"></i>Last Name</label>
+                                <input type="text" id="lastName" placeholder="e.g. Magtatanggol">
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="fas fa-envelope" style="margin-right: 6px;"></i>Email</label>
+                                <input type="email" id="email" placeholder="viktor.magtatanggol@example.com">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-check-circle"></i> Add Record</button>
+                            </div>
+                        </form>
+                        <div id="formFeedback" class="form-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel table-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-table icon"></i> Registered Students</h3>
+                    <span class="action-icon" id="exportBtn" title="Export to CSV"><i class="fas fa-download"></i></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
