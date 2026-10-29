@@ -1,4 +1,4 @@
-export function getStudentsAPI() {
+export function getStudentsAPI() { //access student db
   return mockStudentDb;
 }
 
