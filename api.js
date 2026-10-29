@@ -8,7 +8,7 @@ export function addStudentsAPI(newStudentData) {
   };
 
   mockStudentDb.push(savedStudent);
-  return savedStudent; //return the newly created student object
+  return savedStudent; //add the new student db
 }
 
 let mockStudentDb = [
