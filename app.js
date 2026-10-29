@@ -28,6 +28,20 @@ const renderTable = (dataArray) => {
   });
 };
 
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const formFeedback = document.getElementById('formFeedback');
+
+const showFeedback = (message, type) => {
+  formFeedback.textContent = message;
+  formFeedback.className = 'form-feedback show ' + type;
+};
+
+const resetFeedback = () => {
+  formFeedback.className = 'form-feedback';
+  formFeedback.textContent = '';
+};
+
 studentForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -40,23 +54,40 @@ studentForm.addEventListener('submit', (event) => {
   const email = emailInput.value.trim();
 
   if (!firstName || !lastName || !email) {
-    alert('Please fill out all input fields!');
+    showFeedback('Please fill out all input fields.', 'error');
+    return;
+  }
+
+  if (!EMAIL_REGEX.test(email)) {
+    showFeedback('Please enter a valid email address (must include @ and a domain like .com).', 'error');
+    emailInput.focus();
     return;
   }
 
   const studentData = { firstName, lastName, email };
 
-  const savedStudent = addStudentsAPI(studentData); //pass data to addStudentsAPI() and push to local array
-
-  renderTable(localStudent);
-
-  studentForm.reset();
+  try {
+    const savedStudent = addStudentsAPI(studentData);
+    renderTable(localStudent);
+    resetFeedback();
+    studentForm.reset();
+    showFeedback('Student record added successfully!', 'success');
+  } catch (err) {
+    showFeedback('Failed to add student record. Please try again.', 'error');
+  }
 });
+
 
 const initApp = () => {
   localStudent = getStudentsAPI();
-  
   renderTable(localStudent);
+  formatDate();
+};
+
+const formatDate = () => {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const dateSpan = document.getElementById('currentDate');
+  if (dateSpan) dateSpan.textContent = new Date().toLocaleDateString('en-US', options);
 };
 
 initApp();

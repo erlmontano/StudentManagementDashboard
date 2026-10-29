@@ -209,6 +209,28 @@
         tbody tr { transition: var(--transition); cursor: default; }
         tbody tr:hover { background: var(--surface-hover); }
 
+        .table-body { }
+
+        /* Fade-in animation for table rows */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.05s; }
+        .fade-in:nth-child(2) { animation-delay: 0.12s; }
+        .fade-in:nth-child(3) { animation-delay: 0.19s; }
+        .fade-in:nth-child(4) { animation-delay: 0.26s; }
+        .fade-in:nth-child(5) { animation-delay: 0.33s; }
+        .fade-in:nth-child(6) { animation-delay: 0.40s; }
+        .fade-in:nth-child(7) { animation-delay: 0.47s; }
+        .fade-in:nth-child(8) { animation-delay: 0.54s; }
+
+
         .empty-state {
             text-align: center; padding: 48px 20px;
         }
@@ -323,7 +345,7 @@
                                     <th>Email</th>
                                 </tr>
                             </thead>
-                            <tbody id="studentTableBody">
+                            <tbody id="studentTableBody" class="table-body">
                             </tbody>
                         </table>
                     </div>
