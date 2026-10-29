@@ -30,6 +30,9 @@ const renderTable = (dataArray) => {
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+const MAX_NAME_LENGTH = 50;
+const MAX_EMAIL_LENGTH = 50;
+
 const formFeedback = document.getElementById('formFeedback');
 
 const showFeedback = (message, type) => {
@@ -42,6 +45,13 @@ const resetFeedback = () => {
   formFeedback.textContent = '';
 };
 
+const sanitizeName = (value) => {
+  // Remove HTML tags to prevent XSS
+  return value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+};
+
+const hasSpecialChars = (value) => /[<>{}|\\^~`]/.test(value);
+
 studentForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -49,12 +59,30 @@ studentForm.addEventListener('submit', (event) => {
   const lastNameInput = document.querySelector('#lastName');
   const emailInput = document.querySelector('#email');
 
-  const firstName = firstNameInput.value.trim();
-  const lastName = lastNameInput.value.trim();
+  const firstName = sanitizeName(firstNameInput.value);
+  const lastName = sanitizeName(lastNameInput.value);
   const email = emailInput.value.trim();
 
   if (!firstName || !lastName || !email) {
     showFeedback('Please fill out all input fields.', 'error');
+    return;
+  }
+
+  if (firstName.length > MAX_NAME_LENGTH || lastName.length > MAX_NAME_LENGTH) {
+    showFeedback(`First name and last name must be ${MAX_NAME_LENGTH} characters or fewer.`, 'error');
+    firstNameInput.focus();
+    return;
+  }
+
+  if (hasSpecialChars(firstName) || hasSpecialChars(lastName)) {
+    showFeedback('First name and last name cannot contain special characters (<, >, {, }, |, ^, ~, `).', 'error');
+    firstNameInput.focus();
+    return;
+  }
+
+  if (email.length > MAX_EMAIL_LENGTH) {
+    showFeedback(`Email must be ${MAX_EMAIL_LENGTH} characters or fewer.`, 'error');
+    emailInput.focus();
     return;
   }
 
