@@ -10,7 +10,6 @@ export function addStudentsAPI(newStudentData) {
   mockStudentDb.push(savedStudent);
   return savedStudent; //add the new student db
 }
-let nextId = 3;
 let mockStudentDb = [
   {
     id: Date.now(), //prepoluted data of students' information

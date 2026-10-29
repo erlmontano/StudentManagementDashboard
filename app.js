@@ -10,7 +10,8 @@ const renderTable = (dataArray) => {
   if (!dataArray || dataArray.length === 0) { //check if dataArray has elements
     studentTableBody.innerHTML = `
       <tr>
-        <td colspan="4" style="text-align: center;">No student records found.</td>
+        <td colspan="4" style="text-align: center;">
+        No student records found.</td>
       </tr>
     `;
     return;
@@ -68,26 +69,30 @@ studentForm.addEventListener('submit', (event) => {
     return;
   }
 
-  if (firstName.length > MAX_NAME_LENGTH || lastName.length > MAX_NAME_LENGTH) {
-    showFeedback(`First name and last name must be ${MAX_NAME_LENGTH} characters or fewer.`, 'error');
+  if (firstName.length > MAX_NAME_LENGTH || lastName.length > MAX_NAME_LENGTH){
+    showFeedback(`First name and last name must be 
+        ${MAX_NAME_LENGTH} characters or fewer.`, 'error');
     firstNameInput.focus();
     return;
   }
 
   if (hasSpecialChars(firstName) || hasSpecialChars(lastName)) {
-    showFeedback('First name and last name cannot contain special characters (<, >, {, }, |, ^, ~, `).', 'error');
+    showFeedback(`First name and last name cannot contain special characters
+        (<, >, {, }, |, ^, ~, \`).`, 'error');
     firstNameInput.focus();
     return;
   }
 
   if (email.length > MAX_EMAIL_LENGTH) {
-    showFeedback(`Email must be ${MAX_EMAIL_LENGTH} characters or fewer.`, 'error');
+    showFeedback(`Email must be ${MAX_EMAIL_LENGTH} 
+        characters or fewer.`, 'error');
     emailInput.focus();
     return;
   }
 
   if (!EMAIL_REGEX.test(email)) {
-    showFeedback('Please enter a valid email address (must include @ and a domain like .com).', 'error');
+    showFeedback(`Please enter a valid email address 
+        (must include @ and a domain like .com).`, 'error');
     emailInput.focus();
     return;
   }
@@ -113,9 +118,11 @@ const initApp = () => {
 };
 
 const formatDate = () => {
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { weekday: 'long', year: 'numeric', month: 
+    'long', day: 'numeric' };
   const dateSpan = document.getElementById('currentDate');
-  if (dateSpan) dateSpan.textContent = new Date().toLocaleDateString('en-US', options);
+  if (dateSpan) dateSpan.textContent = 
+  new Date().toLocaleDateString('en-US', options);
 };
 
 initApp();
